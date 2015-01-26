@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="split, long, tweet, twitter">
+    <meta name="description" content="Split your long tweets to post them separately">
+    <meta name="author" content="Hugo López Fernández">
+    
+    <title>split your tweet</title>
+
+    <link rel="shortcut icon" href="images/favicon.ico"> 
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+        
+    <script src="js/jquery-2.1.3.min.js"></script>
+    
+    <script>
+      $(document).ready(function() {
+	$("#output").hide();
+	$("#clear").hide();
+	
+	$("#split").click(function(){
+	  var str = $("#input").val();
+	  
+	  if(str.length > 0){
+	    var words = str.split(" ");
+	    var strOutput = "";
+	    
+	    var splits = new Array();
+	    var count = 0;
+	    var currentTweet = "";
+	    for (var i = 0; i < words.length; i++) {
+	      var currentWord = words[i];
+	      var candidateTweet = (currentTweet + " " + currentWord).trim();
+	      if(candidateTweet.length < 132){
+		currentTweet = candidateTweet;		
+	      } else {				
+		splits[count++] = currentTweet;	
+		currentTweet = currentWord;	    
+	      }	    
+	
+	    }	    
+	    
+	    if(splits.indexOf(currentTweet)!=-1){
+	      splits[count++] = currentTweet;	
+	    }
+	    
+	    splits[count++] = currentTweet;
+	    for (var i = 0; i < splits.length-1; i++) {
+	      var currentTweet = splits[i];
+	      strOutput = strOutput + splits[i] + " ... (" + (i+1) + "/" + splits.length + ")\n";
+	    }
+	    
+	    strOutput = strOutput + splits[splits.length-1] + " (" + (splits.length) + "/" + splits.length + ")\n";
+	    
+	    $("#output").val(strOutput); 
+	    $("#output").show();
+	    $("#clear").show();
+	  }
+	});
+	
+	$("#clear").click(function(){
+	  $("#input").val("");
+	  $("#output").val(""); 
+	  $("#output").hide();
+	  $("#clear").hide();
+	});
+      });
+    </script>
+    
+    <!-- Twitter button script -->
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>    
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+	  <div class="logo">
+	    <!-- Scissors created by Kevin Sträter from the noun project -->
+	    <img src="images/logo.png"/> split your tweet
+	  </div>	 
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="starter-template">    
+        <p class="lead">Want to split large tweets to post them separately? Paste or write your text in the box bellow and click the <i>Split!</i> button.</p>
+        <textarea class="form-control col-xs-12" id="input"></textarea>
+        <button type="button" class="btn btn-primary" id="split">Split!</button>
+        <button type="button" class="btn btn-default" id="clear">Clear</button> 
+        <textarea class="form-control col-xs-12" id="output"></textarea> 
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="pull-left" style="margin-top: 5px">
+	  <a href="https://twitter.com/share" class="twitter-share-button" data-text="Split long tweets to post them separately" data-via="hlfernandez" data-hashtags="splityourtweet"
+	  data-url="http://sing.ei.uvigo.es/~hlfernandez/splityourtweet/">Tweet</a>        
+	</div>
+	<div class="pull-right" style="margin-top: 5px">
+	  <p class="text-muted">
+	    by Hugo L&oacutepez-Fern&aacutendez 
+	    <a href="https://github.com/hlfernandez" target="_blank"><img src="images/github.png" class="github-logo"/></a>
+	  </p>
+        </div>
+      </div>
+    </footer>    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
